@@ -26,10 +26,14 @@ app.use(express.json());
 
 const PORT = 3000;
 
-// "Hello World" route
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+app.get("/api/users", async (req, res) => {
+    try {
+      const users = await User.find(); // Fetch all users from MongoDB
+      res.status(200).json({ message: "Fetching all users", data: users });
+    } catch (error) {
+      res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+  });
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

@@ -60,6 +60,20 @@ app.put("/api/users/:id", async (req, res) => {
     }
   });
 
+app.delete("/api/users/:id", async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const deletedUser = await User.findByIdAndDelete(userId);
+      if (deletedUser) {
+        res.status(200).json({ message: `Deleting user ${userId}`, deletedUser });
+      } else {
+        res.status(404).json({ message: `User with ID ${userId} not found` });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "An error occurred", error: error.message });
+    }
+  });
+
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
